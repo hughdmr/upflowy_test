@@ -1,0 +1,18 @@
+service: langchain-service
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-north-1
+  environment:
+    GPT_API_KEY: ${env:GPT_API_KEY}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+      Resource: "arn:aws:s3:::upflowy/*"
+  apiGateway:
+    apiKeys:
+      - langchainAPIKey
