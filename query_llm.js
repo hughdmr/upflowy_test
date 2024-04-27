@@ -21,7 +21,7 @@ export const query = async (input) => {
 
     const model = new ChatOpenAI({
         openAIApiKey: OPENAI_API_KEY,
-        modelName: "gpt-3.5-turbo",
+        modelName: "gpt-3.5-turbo", //could be gpt-4 implemented but gpt-3.5 is less extensive
         temperature: 0.8,
         maxTokens: 100,
         });

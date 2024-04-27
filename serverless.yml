@@ -6,7 +6,7 @@ provider:
   runtime: nodejs20.x
   region: eu-north-1
   environment:
-    GPT_API_KEY: ${env:GPT_API_KEY}
+    GPT_API_KEY: ${env:OPENAI_API_KEY}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,6 +24,16 @@ functions:
     events:
       - http:
           path: question
+          method: post
+          cors: true
+          private: true
+
+  embedder:
+    handler: embedder.embedder
+    timeout: 15
+    events:
+      - http:
+          path: embedder
           method: post
           cors: true
           private: true
