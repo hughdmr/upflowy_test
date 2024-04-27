@@ -16,3 +16,14 @@ provider:
   apiGateway:
     apiKeys:
       - langchainAPIKey
+
+functions:
+  query_llm:
+    handler: query_llm.query
+    timeout: 15
+    events:
+      - http:
+          path: question
+          method: post
+          cors: true
+          private: true
