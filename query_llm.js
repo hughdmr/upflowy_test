@@ -2,7 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { PromptTemplate } from "langchain/prompts";
-import { BufferMemory } from "langchain/memory";
+import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { LLMChain } from "langchain/chains";
 
 import * as dotenv from "dotenv";
@@ -13,11 +13,11 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 
 // Function take input, return answer
+// TODO : take a json in input with aws bucket for connection
 export const query = async (input) => {
     try{
-    // const question = question;
 
-    const memory = new BufferMemory({ memoryKey: "chat_history" });
+    const chatHistory = "";
 
     const model = new ChatOpenAI({
         openAIApiKey: OPENAI_API_KEY,
@@ -38,7 +38,7 @@ export const query = async (input) => {
 
     const prompt = PromptTemplate.fromTemplate(template);
 
-    const memory = await initializeMemory(chatHistory);
+    const memory = await initMemory(chatHistory);
 
     const chain = new LLMChain({ llm: model, prompt, memory });
 
@@ -64,6 +64,25 @@ export const query = async (input) => {
     };
     }
 };
+
+
+const initMemory = async (history) => {
+    let messages;
+    if (history === "") {
+      messages = [];
+    } else {
+      messages = history.split("\n").map((msg) => {
+        const [role, text] = msg.split(": ");
+        if (role === "human") return new HumanMessage(text);
+        return new AIMessage(text);
+      });
+    }
+  
+    return new BufferMemory({
+      chatHistory: new ChatMessageHistory(messages),
+      memoryKey: "chat_history",
+    });
+  };
 
 const response = query("Hello! I'm Hugues, How are you?");
 console.log({ response });
