@@ -9,7 +9,7 @@
       "runtime": "nodejs20.x",
       "region": "eu-north-1",
       "environment": {
-        "GPT_API_KEY": "sk-proj-P6BUABXv0DGFoT7BTqQ4T3BlbkFJUpxg4ncSiT6bsivmUnQ0"
+        "GPT_API_KEY": ""
       },
       "iamRoleStatements": [
         {
